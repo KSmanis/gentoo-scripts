@@ -6,8 +6,10 @@ from pathlib import Path
 import portage
 
 DEFAULT_CHECK_KEYWORDS = True
+DEFAULT_CHECK_LICENSES = True
 DEFAULT_CHECK_USE_FLAGS = True
 DEFAULT_KEYWORD_PATH = Path('/etc/portage/package.accept_keywords')
+DEFAULT_LICENSE_PATH = Path('/etc/portage/package.license')
 DEFAULT_USE_PATH = Path('/etc/portage/package.use')
 
 
@@ -25,6 +27,11 @@ def _parse_args():
                                help="do not check package keywords")
     keyword_group.add_argument('-K', '--keywords', dest='keywords', action='store_true',
                                help="check package keywords (default)")
+    license_group = parser.add_mutually_exclusive_group()
+    license_group.add_argument('-l', '--no-licenses', dest='licenses', action='store_false',
+                               help="do not check package licenses")
+    license_group.add_argument('-L', '--licenses', dest='licenses', action='store_true',
+                               help="check package licenses (default)")
     use_flag_group = parser.add_mutually_exclusive_group()
     use_flag_group.add_argument('-u', '--no-use-flags', dest='useflags', action='store_false',
                                 help="do not check package USE flags")
@@ -32,9 +39,12 @@ def _parse_args():
                                 help="check package USE flags (default)")
     parser.add_argument('--keyword-path', metavar='PATH', default=DEFAULT_KEYWORD_PATH,
                         help="the path (file or directory) to check for package keywords (default: %(default)s)")
+    parser.add_argument('--license-path', metavar='PATH', default=DEFAULT_LICENSE_PATH,
+                        help="the path (file or directory) to check for package licenses (default: %(default)s)")
     parser.add_argument('--use-path', metavar='PATH', default=DEFAULT_USE_PATH,
                         help="the path (file or directory) to check for package USE flags (default: %(default)s)")
-    parser.set_defaults(keywords=DEFAULT_CHECK_KEYWORDS, useflags=DEFAULT_CHECK_USE_FLAGS)
+    parser.set_defaults(keywords=DEFAULT_CHECK_KEYWORDS, licenses=DEFAULT_CHECK_LICENSES,
+                        useflags=DEFAULT_CHECK_USE_FLAGS)
     return parser.parse_args()
 
 
@@ -76,6 +86,24 @@ def check_keywords(path=DEFAULT_KEYWORD_PATH):
                             ))
 
 
+def check_licenses(path=DEFAULT_LICENSE_PATH):
+    print("Checking licenses...")
+    for p in _get_input_file_paths(Path(path)):
+        with open(p) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+
+                atom = line.split(maxsplit=1)[0]
+                installed_packages = portage.db[portage.root]['vartree'].dbapi.match(atom)
+                if not installed_packages:
+                    print("{file_name}: {atom} is missing!".format(
+                        file_name=portage.output.white(f.name),
+                        atom=portage.output.red(atom),
+                    ))
+
+
 def check_use_flags(path=DEFAULT_USE_PATH):
     print("Checking USE flags...")
     for p in _get_input_file_paths(Path(path)):
@@ -112,5 +140,7 @@ if __name__ == '__main__':
     args = _parse_args()
     if args.keywords:
         check_keywords(path=args.keyword_path)
+    if args.licenses:
+        check_licenses(path=args.license_path)
     if args.useflags:
         check_use_flags(path=args.use_path)
