@@ -66,7 +66,7 @@ def check_keywords(path=DEFAULT_KEYWORD_PATH):
                 keywords = tokens[1:] or ['~{host_arch}'.format(host_arch=portage.settings['ARCH'])]
                 installed_packages = portage.db[portage.root]['vartree'].dbapi.match(atom)
                 if not installed_packages:
-                    print("{file_name}: {atom} is missing!".format(
+                    print("{file_name}: {atom} is no longer installed!".format(
                         file_name=portage.output.white(f.name),
                         atom=portage.output.red(atom),
                     ))
@@ -79,7 +79,7 @@ def check_keywords(path=DEFAULT_KEYWORD_PATH):
                     available_keywords = package_keywords.split()
                     for keyword in keywords:
                         if keyword not in available_keywords:
-                            print("{file_name}: {atom} is missing the {keyword} keyword!".format(
+                            print("{file_name}: {atom} no longer requires the {keyword} keyword!".format(
                                 file_name=portage.output.white(f.name),
                                 atom=portage.output.red(atom),
                                 keyword=portage.output.yellow(keyword),
@@ -98,7 +98,7 @@ def check_licenses(path=DEFAULT_LICENSE_PATH):
                 atom = line.split(maxsplit=1)[0]
                 installed_packages = portage.db[portage.root]['vartree'].dbapi.match(atom)
                 if not installed_packages:
-                    print("{file_name}: {atom} is missing!".format(
+                    print("{file_name}: {atom} is no longer installed!".format(
                         file_name=portage.output.white(f.name),
                         atom=portage.output.red(atom),
                     ))
@@ -118,7 +118,7 @@ def check_use_flags(path=DEFAULT_USE_PATH):
                 use_flags = list(map(_strip_use_flag, tokens[1:]))
                 installed_packages = portage.db[portage.root]['vartree'].dbapi.match(atom)
                 if not installed_packages:
-                    print("{file_name}: {atom} is missing!".format(
+                    print("{file_name}: {atom} is no longer installed!".format(
                         file_name=portage.output.white(f.name),
                         atom=portage.output.red(atom),
                     ))
@@ -129,7 +129,7 @@ def check_use_flags(path=DEFAULT_USE_PATH):
                     available_use_flags = list(map(_strip_use_flag, package_iuse.split()))
                     for use_flag in use_flags:
                         if use_flag not in available_use_flags:
-                            print("{file_name}: {atom} is missing the {use_flag} USE flag!".format(
+                            print("{file_name}: {atom} no longer makes use of the {use_flag} USE flag!".format(
                                 file_name=portage.output.white(f.name),
                                 atom=portage.output.red(atom),
                                 use_flag=portage.output.yellow(use_flag),
