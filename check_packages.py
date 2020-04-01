@@ -63,7 +63,7 @@ def check_keywords(path=DEFAULT_KEYWORD_PATH):
 
                 tokens = line.split()
                 atom = tokens[0]
-                keywords = tokens[1:] or ['~{host_arch}'.format(host_arch=portage.settings["ARCH"])]
+                keywords = tokens[1:] or ['~{host_arch}'.format(host_arch=portage.settings['ARCH'])]
                 installed_packages = portage.db[portage.root]['vartree'].dbapi.match(atom)
                 if not installed_packages:
                     print("{file_name}: {atom} is missing!".format(
