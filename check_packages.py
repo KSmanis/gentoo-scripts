@@ -75,15 +75,22 @@ def check_keywords(path=DEFAULT_KEYWORD_PATH):
                     continue
 
                 for package in installed_packages:
-                    package_keywords = portage.db[portage.root]['porttree'].dbapi.aux_get(package, ['KEYWORDS'])[0]
-                    available_keywords = package_keywords.split()
-                    for keyword in keywords:
-                        if keyword not in available_keywords:
-                            print("{file_name}: {atom} no longer requires the {keyword} keyword!".format(
-                                file_name=portage.output.white(f.name),
-                                atom=portage.output.red(atom),
-                                keyword=portage.output.yellow(keyword),
-                            ))
+                    try:
+                        package_keywords = portage.db[portage.root]['porttree'].dbapi.aux_get(package, ['KEYWORDS'])[0]
+                    except portage.exception.PortageKeyError:
+                        print("{file_name}: {atom} is no longer available in the portage tree!".format(
+                            file_name=portage.output.white(f.name),
+                            atom=portage.output.red(atom),
+                        ))
+                    else:
+                        available_keywords = package_keywords.split()
+                        for keyword in keywords:
+                            if keyword not in available_keywords:
+                                print("{file_name}: {atom} no longer requires the {keyword} keyword!".format(
+                                    file_name=portage.output.white(f.name),
+                                    atom=portage.output.red(atom),
+                                    keyword=portage.output.yellow(keyword),
+                                ))
 
 
 def check_licenses(path=DEFAULT_LICENSE_PATH):
@@ -125,15 +132,22 @@ def check_use_flags(path=DEFAULT_USE_PATH):
                     continue
 
                 for package in installed_packages:
-                    package_iuse = portage.db[portage.root]['porttree'].dbapi.aux_get(package, ['IUSE'])[0]
-                    available_use_flags = list(map(_strip_use_flag, package_iuse.split()))
-                    for use_flag in use_flags:
-                        if use_flag not in available_use_flags:
-                            print("{file_name}: {atom} no longer makes use of the {use_flag} USE flag!".format(
-                                file_name=portage.output.white(f.name),
-                                atom=portage.output.red(atom),
-                                use_flag=portage.output.yellow(use_flag),
-                            ))
+                    try:
+                        package_iuse = portage.db[portage.root]['porttree'].dbapi.aux_get(package, ['IUSE'])[0]
+                    except portage.exception.PortageKeyError:
+                        print("{file_name}: {atom} is no longer available in the portage tree!".format(
+                            file_name=portage.output.white(f.name),
+                            atom=portage.output.red(atom),
+                        ))
+                    else:
+                        available_use_flags = list(map(_strip_use_flag, package_iuse.split()))
+                        for use_flag in use_flags:
+                            if use_flag not in available_use_flags:
+                                print("{file_name}: {atom} no longer makes use of the {use_flag} USE flag!".format(
+                                    file_name=portage.output.white(f.name),
+                                    atom=portage.output.red(atom),
+                                    use_flag=portage.output.yellow(use_flag),
+                                ))
 
 
 if __name__ == '__main__':
