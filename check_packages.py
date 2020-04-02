@@ -48,9 +48,9 @@ def _parse_args():
     sort_order_group.add_argument('-S', '--sort-order', dest='sort_order', action='store_true',
                                   help="check sort order (default)")
     use_flag_group = parser.add_mutually_exclusive_group()
-    use_flag_group.add_argument('-u', '--no-use-flags', dest='useflags', action='store_false',
+    use_flag_group.add_argument('-u', '--no-use-flags', dest='use_flags', action='store_false',
                                 help="do not check package USE flags")
-    use_flag_group.add_argument('-U', '--use-flags', dest='useflags', action='store_true',
+    use_flag_group.add_argument('-U', '--use-flags', dest='use_flags', action='store_true',
                                 help="check package USE flags (default)")
     parser.add_argument('--keyword-path', metavar='PATH', default=DEFAULT_KEYWORD_PATH,
                         help="the path (file or directory) to check for package keywords (default: %(default)s)")
@@ -59,7 +59,7 @@ def _parse_args():
     parser.add_argument('--use-path', metavar='PATH', default=DEFAULT_USE_PATH,
                         help="the path (file or directory) to check for package USE flags (default: %(default)s)")
     parser.set_defaults(keywords=DEFAULT_CHECK_KEYWORDS, licenses=DEFAULT_CHECK_LICENSES,
-                        sort_order=DEFAULT_CHECK_SORT_ORDER, useflags=DEFAULT_CHECK_USE_FLAGS)
+                        sort_order=DEFAULT_CHECK_SORT_ORDER, use_flags=DEFAULT_CHECK_USE_FLAGS)
     return parser.parse_args()
 
 
@@ -176,5 +176,5 @@ if __name__ == '__main__':
         check_keywords(path=args.keyword_path)
     if args.licenses:
         check_licenses(path=args.license_path)
-    if args.useflags:
+    if args.use_flags:
         check_use_flags(path=args.use_path, check_sort_order=args.sort_order)
