@@ -1,3 +1,12 @@
-language: shell
-script:
-  - bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
+jobs:
+  include:
+    - name: pycodestyle
+      language: python
+      before_install:
+        - pip install pycodestyle
+      script:
+        - pycodestyle .
+    - name: shellcheck
+      language: shell
+      script:
+        - bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
