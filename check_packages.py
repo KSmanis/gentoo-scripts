@@ -188,6 +188,9 @@ def check_keywords(path=DEFAULT_KEYWORD_PATH):
                     atom=atom,
                 )
             else:
+                if keywords == ['**'] and not package_keywords:
+                    continue
+
                 available_keywords = package_keywords.split()
                 for keyword in keywords:
                     if keyword not in available_keywords:
