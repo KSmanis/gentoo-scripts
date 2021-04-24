@@ -1,10 +1,10 @@
-name: lint
+---
+name: super-linter
 
 on: [push, pull_request]
 
 jobs:
-  super_linter:
-    name: super-linter
+  super-linter:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -12,7 +12,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run super-linter
-        uses: github/super-linter@v3
+        uses: github/super-linter@v3.15.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_PYTHON_BLACK: false
