@@ -1,5 +1,6 @@
 # Gentoo scripts
 
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 [![pre-commit](https://github.com/KSmanis/gentoo-scripts/workflows/pre-commit/badge.svg)](https://github.com/KSmanis/gentoo-scripts/actions?workflow=pre-commit)
 [![super-linter](https://github.com/KSmanis/gentoo-scripts/workflows/super-linter/badge.svg)](https://github.com/KSmanis/gentoo-scripts/actions?workflow=super-linter)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
