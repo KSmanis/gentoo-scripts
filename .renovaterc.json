@@ -21,6 +21,13 @@
         "psf/black"
       ],
       "versioning": "pep440"
+    },
+    {
+      "automerge": true,
+      "matchManagers": [
+        "github-actions",
+        "pre-commit"
+      ]
     }
   ]
 }
