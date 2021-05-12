@@ -21,5 +21,5 @@ following scripts in order:
 ### Auxiliary scripts
 
 - [`check_packages.py`](check_packages.py) is used by the [`clean.sh`](clean.sh)
-  script in order to check for obsolete package configuration (e.g., keywords and
-  USE flags).
+  script in order to check for obsolete package configuration (e.g., keywords
+  and USE flags).
