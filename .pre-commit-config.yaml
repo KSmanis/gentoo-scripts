@@ -35,7 +35,6 @@ repos:
       - id: mdformat
         additional_dependencies:
           - mdformat-gfm
-          - mdformat-tables
         args: ["--number", "--wrap", "80"]
   # Python
   - repo: https://github.com/PyCQA/isort
